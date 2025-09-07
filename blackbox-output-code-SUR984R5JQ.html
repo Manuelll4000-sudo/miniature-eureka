@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Foro y Comunicados - Plataforma Comunitaria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for enhanced UI */
+        .post-card {
+            transition: all 0.3s ease;
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .reply-thread {
+            margin-left: 2rem;
+            border-left: 3px solid #e5e7eb;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        .uploaded-file {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+        }
+        .uploaded-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans">
+    <header class="bg-white shadow-lg border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-800">Foro Comunitario</h1>
+                <nav class="hidden md:flex space-x-6">
+                    <button id="notices-tab" class="text-indigo-600 font-medium">Comunicados</button>
+                    <button id="forum-tab" class="text-gray-700 hover:text-indigo-600 font-medium">Foro</button>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-gray-900">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <button id="mobile-notices-tab" class="block w-full text-left text-indigo-600 mb-2">Comunicados</button>
+                <button id="mobile-forum-tab" class="block w-full text-left text-gray-700 hover:text-indigo-600">Foro</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Notices Section -->
+        <section id="notices-section" class="fade-in">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Comunicados Oficiales</h2>
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4">Publicar Nuevo Comunicado</h3>
+                <form id="notice-form" class="space-y-4">
+                    <input type="text" id="notice-title" placeholder="Título del comunicado" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <textarea id="notice-content" placeholder="Contenido del comunicado" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <div>
+                        <label for="notice-file" class="block text-sm font-medium text-gray-700 mb-2">Adjuntar archivo (opcional: imágenes, PDF, DOC, TXT)</label>
+                        <input type="file" id="notice-file" accept="image/*,.pdf,.doc,.docx,.txt" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    </div>
+                    <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Publicar Comunicado</button>
+                </form>
+            </div>
+            <div id="notices-list" class="space-y-4">
+                <!-- Notices will be displayed here -->
+            </div>
+        </section>
+
+        <!-- Forum Section -->
+        <section id="forum-section" class="hidden fade-in">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Foro de Discusión</h2>
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4">Iniciar Nueva Conversación</h3>
+                <form id="post-form" class="space-y-4">
+                    <input type="text" id="post-title" placeholder="Título de la publicación" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <textarea id="post-content" placeholder="Contenido de la publicación" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <div>
+                        <label for="post-file" class="block text-sm font-medium text-gray-700 mb-2">Adjuntar archivo (opcional: imágenes, PDF, DOC, TXT)</label>
+                        <input type="file" id="post-file" accept="image/*,.pdf,.doc,.docx,.txt" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    </div>
+                    <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Publicar</button>
+                </form>
+            </div>
+            <div id="forum-posts" class="space-y-6">
+                <!-- Forum posts will be displayed here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Replies -->
+    <div id="reply-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-xl font-bold mb-4">Responder</h3>
+            <textarea id="reply-content" placeholder="Escribe tu respuesta aquí..." rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"></textarea>
+            <div>
+                <label for="reply-file" class="block text-sm font-medium text-gray-700 mb-2">Adjuntar archivo (opcional)</label>
+                <input type="file" id="reply-file" accept="image/*,.pdf,.doc,.docx,.txt" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4" />
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button id="cancel-reply" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition duration-300">Cancelar</button>
+                <button id="submit-reply" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data structures for persistence
+        let notices = JSON.parse(localStorage.getItem('notices')) || [];
+        let forumPosts = JSON.parse(localStorage.getItem('forumPosts')) || [];
+        let currentReplyTo = null;
+
+        // DOM Elements
+        const noticesSection = document.getElementById('notices-section');
+        const forumSection = document.getElementById('forum-section');
+        const noticesTab = document.getElementById('notices-tab');
+        const forumTab = document.getElementById('forum-tab');
+        const mobileNoticesTab = document.getElementById('mobile-notices-tab');
+        const mobileForumTab = document.getElementById('mobile-forum-tab');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const replyModal = document.getElementById('reply-modal');
+        const cancelReplyBtn = document.getElementById('cancel-reply');
+        const submitReplyBtn = document.getElementById('submit-reply');
+
+        // Tab switching
+        function switchToNotices() {
+            noticesSection.classList.remove('hidden');
+            forumSection.classList.add('hidden');
+            noticesTab.classList.add('text-indigo-600');
+            forumTab.classList.remove('text-indigo-600');
+        }
+
+        function switchToForum() {
+            noticesSection.classList.add('hidden');
+            forumSection.classList.remove('hidden');
+            noticesTab.classList.remove('text-indigo-600');
+            forumTab.classList.add('text-indigo-600');
+        }
+
+        noticesTab.addEventListener('click', switchToNotices);
+        forumTab.addEventListener('click', switchToForum);
+        mobileNoticesTab.addEventListener('click', () => {
+            switchToNotices();
+            mobileMenu.classList.add('hidden');
+        });
+        mobileForumTab.addEventListener('click', () => {
+            switchToForum();
+            mobileMenu.classList.add('hidden');
+        });
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Utility function to display uploaded files (images or links)
+        function displayFile(fileObj, container) {
+            if (!fileObj || !fileObj.data) return;
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'uploaded-file';
+            if (fileObj.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = fileObj.data;
+                img.className = 'uploaded-image';
+                img.alt = `Imagen subida: ${fileObj.name}`;
+                fileDiv.appendChild(img);
+            } else {
+                const link = document.createElement('a');
+                link.href = fileObj.data;
+                link.download = fileObj.name;
+                link.textContent = fileObj.name;
+                link.className = 'text-indigo-600 hover:underline';
+                fileDiv.appendChild(link);
+            }
+            container.appendChild(fileDiv);
+        }
+
+        // Notices functionality
+        const noticeForm = document.getElementById('notice-form');
+        const noticesList = document.getElementById('notices-list');
+
+        noticeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Formulario de comunicado enviado');
+
+            const title = document.getElementById('notice-title').value.trim();
+            const content = document.getElementById('notice-content').value.trim();
+            const fileInput = document.getElementById('notice-file');
+            const file = fileInput.files[0];
+
+            if (!title || !content) {
+                alert('Por favor, completa el título y el contenido.');
+                return;
+            }
+
+            const notice = {
+                id: Date.now(),
+                title,
+                content,
+                file: null,
+                timestamp: new Date().toLocaleString()
+            };
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    notice.file = {
+                        name: file.name,
+                        type: file.type,
+                        data: reader.result
+                    };
+                    notices.unshift(notice);
+                    localStorage.setItem('notices', JSON.stringify(notices));
+                    renderNotices();
+                    noticeForm.reset();
+                    console.log('Comunicado con archivo guardado');
+                };
+                reader.onerror = () => {
+                    alert('Error al leer el archivo.');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                notices.unshift(notice);
+                localStorage.setItem('notices', JSON.stringify(notices));
+                renderNotices();
+                noticeForm.reset();
+                console.log('Comunicado sin archivo guardado');
+            }
+        });
+
+        function renderNotices() {
+            noticesList.innerHTML = '';
+            notices.forEach(notice => {
+                const noticeElement = document.createElement('div');
+                noticeElement.className = 'post-card bg-white rounded-lg shadow-md p-6';
+                noticeElement.innerHTML = `
+                    <h4 class="text-xl font-semibold mb-2">${notice.title}</h4>
+                    <p class="text-gray-700 mb-2">${notice.content}</p>
+                    <p class="text-sm text-gray-500">${notice.timestamp}</p>
+                `;
+                if (notice.file && notice.file.data) {
+                    displayFile(notice.file, noticeElement);
+                }
+                noticesList.appendChild(noticeElement);
+            });
+        }
+
+        // Forum functionality
+        const postForm = document.getElementById('post-form');
+        const forumPostsContainer = document.getElementById('forum-posts');
+
+        postForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Formulario de foro enviado');
+
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const fileInput = document.getElementById('post-file');
+            const file = fileInput.files[0];
+
+            if (!title || !content) {
+                alert('Por favor, completa el título y el contenido.');
+                return;
+            }
+
+            const post = {
+                id: Date.now(),
+                title,
+                content,
+                replies: [],
+                file: null,
+                timestamp: new Date().toLocaleString()
+            };
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    post.file = {
+                        name: file.name,
+                        type: file.type,
+                        data: reader.result
+                    };
+                    forumPosts.unshift(post);
+                    localStorage.setItem('forumPosts', JSON.stringify(forumPosts));
+                    renderForumPosts();
+                    postForm.reset();
+                    console.log('Publicación con archivo guardada');
+                };
+                reader.onerror = () => {
+                    alert('Error al leer el archivo.');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                forumPosts.unshift(post);
+                localStorage.setItem('forumPosts', JSON.stringify(forumPosts));
+                renderForumPosts();
+                postForm.reset();
+                console.log('Publicación sin archivo guardada');
+            }
+        });
+
+        function renderForumPosts() {
+            forumPostsContainer.innerHTML = '';
+            forumPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post-card bg-white rounded-lg shadow-md p-6';
+                postElement.innerHTML = `
+                    <h4 class="text-xl font-semibold mb-2">${post.title}</h4>
+                    <p class="text-gray-700 mb-4">${post.content}</p>
+                    <p class="text-sm text-gray-500 mb-4">${post.timestamp}</p>
+                    <button class="reply-btn bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition duration-300" data-id="${post.id}">Responder</button>
+                `;
+                if (post.file && post.file.data) {
+                    displayFile(post.file, postElement);
+                }
+                const repliesDiv = document.createElement('div');
+                repliesDiv.className = 'replies mt-4';
+                repliesDiv.setAttribute('data-post-id', post.id);
+                post.replies.forEach(reply => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'reply-thread pl-4 py-2 border-l-4 border-indigo-200 mt-2';
+                    replyDiv.innerHTML = `
+                        <p class="text-gray-700">${reply.content}</p>
+                        <p class="text-sm text-gray-500">${reply.timestamp}</p>
+                    `;
+                    if (reply.file && reply.file.data) {
+                        displayFile(reply.file, replyDiv);
+                    }
+                    repliesDiv.appendChild(replyDiv);
+                });
+                postElement.appendChild(repliesDiv);
+                forumPostsContainer.appendChild(postElement);
+            });
+
+            // Attach reply event listeners
+            document.querySelectorAll('.reply-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentReplyTo = parseInt(e.target.getAttribute('data-id'));
+                    replyModal.classList.remove('hidden');
+                    document.getElementById('reply-content').focus();
+                });
+            });
+        }
+
+        // Reply modal functionality
+        cancelReplyBtn.addEventListener('click', () => {
+            replyModal.classList.add('hidden');
+            document.getElementById('reply-content').value = '';
+            document.getElementById('reply-file').value = '';
+            currentReplyTo = null;
+        });
+
+        submitReplyBtn.addEventListener('click', () => {
+            const content = document.getElementById('reply-content').value.trim();
+            const fileInput = document.getElementById('reply-file');
+            const file = fileInput.files[0];
+
+            if (!content) {
+                alert('Por favor, escribe tu respuesta.');
+                return;
+            }
+
+            if (currentReplyTo) {
+                const post = forumPosts.find(p => p.id === currentReplyTo);
+                if (post) {
+                    const reply = {
+                        id: Date.now(),
+                        content,
+                        file: null,
+                        timestamp: new Date().toLocaleString()
+                    };
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            reply.file = {
+                                name: file.name,
+                                type: file.type,
+                                data: reader.result
+                            };
+                            post.replies.push(reply);
+                            localStorage.setItem('forumPosts', JSON.stringify(forumPosts));
+                            renderForumPosts();
+                            replyModal.classList.add('hidden');
+                            document.getElementById('reply-content').value = '';
+                            document.getElementById('reply-file').value = '';
+                            currentReplyTo = null;
+                            console.log('Respuesta con archivo enviada');
+                        };
+                        reader.onerror = () => {
+                            alert('Error al leer el archivo.');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        post.replies.push(reply);
+                        localStorage.setItem('forumPosts', JSON.stringify(forumPosts));
+                        renderForumPosts();
+                        replyModal.classList.add('hidden');
+                        document.getElementById('reply-content').value = '';
+                        document.getElementById('reply-file').value = '';
+                        currentReplyTo = null;
+                        console.log('Respuesta sin archivo enviada');
+                    }
+                }
+            }
+        });
+
+        // Initial render
+        renderNotices();
+        renderForumPosts();
+
+        // Close modal when clicking outside
+        replyModal.addEventListener('click', (e) => {
+            if (e.target === replyModal) {
+                replyModal.classList.add('hidden');
+                document.getElementById('reply-content').value = '';
+                document.getElementById('reply-file').value = '';
+                currentReplyTo = null;
+            }
+        });
+    </script>
+</body>
+</html>
+</content>
+</create_file>
